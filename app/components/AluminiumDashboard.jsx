@@ -101,7 +101,7 @@ export default function AluminiumDashboard() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
                 <TrendingUp className="h-8 w-8 text-blue-600" />
-                Dashboard ALUPRICE
+                ALUPRICE Dashboard
               </h1>
               <p className="text-gray-600 dark:text-gray-400 mt-2">
                 Pronóstico de Precios de Aluminio con Redes Neuronales LSTM
@@ -211,13 +211,13 @@ export default function AluminiumDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Precio Actual</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">
                   {loading.price ? (
                     <div className="h-8 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
                   ) : (
                     `$${latestPrice?.price?.toLocaleString() || '2,617'}`
                   )}
-                </p>
+                </div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   USD por tonelada métrica
                 </p>
@@ -233,13 +233,13 @@ export default function AluminiumDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Precisión del Modelo</p>
-                <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                   {loading.model ? (
                     <div className="h-8 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
                   ) : (
                     `${modelInfo?.performance_metrics?.metrics?.MAPE || 2.35}%`
                   )}
-                </p>
+                </div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Tasa de Error MAPE
                 </p>
@@ -436,7 +436,7 @@ export default function AluminiumDashboard() {
 
           <div className="text-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 pt-6">
             <p className="mb-2">
-              <span className="font-semibold">Dashboard ALUPRICE v1.0.0</span> | {' '}
+              <span className="font-semibold">ALUPRICE Dashboard v1.0.0</span> | {' '}
               Impulsado por Redes Neuronales LSTM | {' '}
               <span className="font-medium text-green-600 dark:text-green-400">
                 Precisión del Modelo {modelInfo?.performance_metrics?.metrics?.MAPE ? (100 - parseFloat(modelInfo.performance_metrics.metrics.MAPE)).toFixed(1) : 97.7}%

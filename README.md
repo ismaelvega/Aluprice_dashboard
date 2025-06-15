@@ -36,6 +36,7 @@ npm install && npm run dev
 - **Executive-Ready Presentations** - UI optimized for stakeholder meetings
 - **Strategic Decision Support** - Data-driven recommendations and market sentiment analysis
 - **Zero Setup Demo Mode** - Works immediately with realistic mock data
+- **🆕 Explainable AI** - Economic Drivers Carousel transforms black-box predictions into transparent, strategic insights
 
 ---
 
@@ -54,6 +55,14 @@ npm install && npm run dev
 - **High Accuracy Model** - 97.7% accuracy (2.35% MAPE)
 - **Confidence Intervals** - Upper and lower bounds for all predictions
 - **Model Performance Metrics** - Real-time accuracy and error tracking
+- **🆕 Economic Drivers Carousel** - Interactive explainer for AI transparency showing 7 economic factors driving predictions
+
+### 🎯 **Explainable AI Features**
+- **Economic Drivers Visualization** - Interactive carousel showcasing 7 key economic indicators
+- **Strategic Business Insights** - Executive-level analysis of each economic factor's impact
+- **Risk Assessment & Recommendations** - Strategic implications and market intelligence
+- **Historical vs. Predicted Trends** - Combined visualization with Recharts integration
+- **AI Transparency** - Transform "black box" predictions into actionable business intelligence
 
 ### 📈 **Interactive Forecasting Tools**
 - **Quick Forecast Buttons** - 1, 3, 7, 15-day predictions
@@ -99,6 +108,7 @@ aluminium-forecasting-dashboard/
 ├── app/                          # Next.js App Router
 │   ├── components/              # React components
 │   │   ├── AluminiumDashboard.jsx    # Main dashboard component
+│   │   ├── EconomicDriversCarousel.jsx # 🆕 AI explainability carousel
 │   │   ├── ExecutiveSummary.jsx      # Executive insights
 │   │   ├── ForecastChart.jsx         # Interactive charts
 │   │   ├── ForecastControls.jsx      # Forecast controls

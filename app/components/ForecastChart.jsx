@@ -1,9 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, ComposedChart } from 'recharts';
 import { format, parseISO, addDays } from 'date-fns';
+import { Brain, ChevronRight } from 'lucide-react';
+import EconomicDriversCarousel from './EconomicDriversCarousel';
 
 export default function ForecastChart({ forecastData, historicalData, loading }) {
+  const [showDrivers, setShowDrivers] = useState(false);
+
   if (loading) {
     return (
       <div className="h-80 flex items-center justify-center bg-gray-50 dark:bg-gray-900 rounded-lg">
@@ -103,6 +108,18 @@ export default function ForecastChart({ forecastData, historicalData, loading })
         </div>
       )}
 
+      {/* Economic Drivers Button */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => setShowDrivers(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg shadow-sm transition-all duration-200 hover:shadow-md"
+        >
+          <Brain className="h-4 w-4" />
+          <span className="text-sm font-medium">Ver Factores Económicos</span>
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      </div>
+
       {/* Main Chart */}
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
@@ -179,6 +196,13 @@ export default function ForecastChart({ forecastData, historicalData, loading })
           <span className="text-gray-600 dark:text-gray-400">Intervalo de Confianza</span>
         </div>
       </div>
+
+      {/* Economic Drivers Carousel */}
+      <EconomicDriversCarousel 
+        isOpen={showDrivers}
+        onClose={() => setShowDrivers(false)}
+        forecastHorizon={forecastData?.predictions?.length || 7}
+      />
     </div>
   );
 }
