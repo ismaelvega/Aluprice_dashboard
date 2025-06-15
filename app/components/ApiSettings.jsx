@@ -13,14 +13,26 @@ export default function ApiSettings({ onSettingsUpdate }) {
   const testConnection = async () => {
     setTesting(true);
     try {
-      // Temporarily set the API URL for testing
-      const originalUrl = process.env.NEXT_PUBLIC_API_URL;
-      process.env.NEXT_PUBLIC_API_URL = apiUrl;
+      // Test the connection with the new API URL
+      const testUrl = apiUrl || process.env.NEXT_PUBLIC_API_URL;
       
-      await fetchHealthCheck();
-      setConnectionStatus('connected');
-      if (onSettingsUpdate) {
-        onSettingsUpdate({ apiUrl, status: 'connected' });
+      if (testUrl) {
+        // Make a direct fetch request to test the connection
+        const response = await fetch(`${testUrl}/health`);
+        if (response.ok) {
+          setConnectionStatus('connected');
+          if (onSettingsUpdate) {
+            onSettingsUpdate({ apiUrl: testUrl, status: 'connected' });
+          }
+        } else {
+          throw new Error(`HTTP ${response.status}`);
+        }
+      } else {
+        // Demo mode - no API URL provided
+        setConnectionStatus('demo');
+        if (onSettingsUpdate) {
+          onSettingsUpdate({ apiUrl: '', status: 'demo' });
+        }
       }
     } catch (error) {
       setConnectionStatus('error');
@@ -93,6 +105,11 @@ export default function ApiSettings({ onSettingsUpdate }) {
                       <CheckCircle className="h-4 w-4 text-green-500" />
                       <span className="text-sm text-green-600">Conectado</span>
                     </>
+                  ) : connectionStatus === 'demo' ? (
+                    <>
+                      <CheckCircle className="h-4 w-4 text-blue-500" />
+                      <span className="text-sm text-blue-600">Modo Demo</span>
+                    </>
                   ) : connectionStatus === 'error' ? (
                     <>
                       <AlertCircle className="h-4 w-4 text-red-500" />
@@ -123,16 +140,16 @@ export default function ApiSettings({ onSettingsUpdate }) {
             <div className="flex gap-3 mt-6">
               <button
                 onClick={testConnection}
-                disabled={testing || !apiUrl}
+                disabled={testing}
                 className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-md transition-colors"
               >
-                {testing ? 'Testing...' : 'Test Connection'}
+                {testing ? 'Probando...' : 'Probar Conexión'}
               </button>
               <button
                 onClick={saveSettings}
                 className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
               >
-                Save & Apply
+                Guardar y Aplicar
               </button>
             </div>
           </div>
