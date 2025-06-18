@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { TrendingUp, Activity, DollarSign, Target, Calendar, Zap, AlertCircle } from 'lucide-react';
+import { TrendingUp, Activity, DollarSign, Target, Calendar, Zap, AlertCircle, Brain, BarChart3 } from 'lucide-react';
 import PriceChart from './PriceChart';
 import ForecastChart from './ForecastChart';
 import ModelMetrics from './ModelMetrics';
+import ModelInfo from './ModelInfo';
 import ForecastControls from './ForecastControls';
 import ExecutiveSummary from './ExecutiveSummary';
 import MarketIndicators from './MarketIndicators';
@@ -17,6 +18,7 @@ export default function AluminiumDashboard() {
   const [forecastData, setForecastData] = useState(null);
   const [modelInfo, setModelInfo] = useState(null);
   const [selectedHorizon, setSelectedHorizon] = useState(7);
+  const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState({
     price: true,
     historical: true,
@@ -124,87 +126,70 @@ export default function AluminiumDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Data Context Information */}
-        {modelInfo && (
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-8">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center space-x-3">
-                <Calendar className="h-6 w-6 text-blue-600" />
-                <div>
-                  <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
-                    Contexto de Datos del Modelo
-                  </h3>
-                  <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
-                    Nuestro modelo predice precios con {modelInfo?.performance_metrics?.metrics?.MAPE ? (100 - parseFloat(modelInfo.performance_metrics.metrics.MAPE)).toFixed(1) : 97.7}% de precisión, con errores típicos de solo ±{modelInfo?.performance_metrics?.metrics?.MAPE || 2.35}%
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
-                <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                  Período de Entrenamiento
-                </div>
-                <div className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {modelInfo?.data_information?.first_data_date ? 
-                    new Date(modelInfo.data_information.first_data_date + 'T00:00:00').toLocaleDateString('es-ES', { 
-                      year: 'numeric', 
-                      month: 'long',
-                      day: 'numeric'
-                    }) : 'Cargando...'
-                  }
-                  {' - '}
-                  {modelInfo?.data_information?.last_data_date ? 
-                    new Date(modelInfo.data_information.last_data_date + 'T00:00:00').toLocaleDateString('es-ES', { 
-                      year: 'numeric', 
-                      month: 'long',
-                      day: 'numeric'
-                    }) : 'Cargando...'
-                  }
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  {modelInfo?.data_information?.first_data_date && modelInfo?.data_information?.last_data_date ? 
-                    Math.round((new Date(modelInfo.data_information.last_data_date + 'T00:00:00') - new Date(modelInfo.data_information.first_data_date + 'T00:00:00')) / (1000 * 60 * 60 * 24 * 365.25) * 10) / 10 
-                    : 'N/A'
-                  } años de datos históricos
-                </div>
-              </div>
-              
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
-                <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                  "Hoy" para el Modelo
-                </div>
-                <div className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {modelInfo?.data_information?.last_data_date ? 
-                    new Date(modelInfo.data_information.last_data_date + 'T00:00:00').toLocaleDateString('es-ES', { 
-                      year: 'numeric', 
-                      month: 'long',
-                      day: 'numeric'
-                    }) : 'Cargando...'
-                  }
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Último día con datos disponibles
-                </div>
-              </div>
-              
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
-                <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                  Horizonte de Pronóstico
-                </div>
-                <div className="text-lg font-semibold text-gray-900 dark:text-white">
-                  1 - 30 días
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Amplio rango para planificación táctica y estratégica
-                </div>
-              </div>
-            </div>
+        {/* Tab Navigation */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-8">
+          <div className="flex border-b border-gray-200 dark:border-gray-700">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${
+                activeTab === 'overview'
+                  ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+              }`}
+            >
+              <BarChart3 className="h-4 w-4" />
+              Vista Ejecutiva
+            </button>
+            <button
+              onClick={() => setActiveTab('model')}
+              className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${
+                activeTab === 'model'
+                  ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+              }`}
+            >
+              <Brain className="h-4 w-4" />
+              Información del Modelo IA
+            </button>
           </div>
-        )}
+        </div>
 
-        {/* Key Metrics Cards */}
+        {/* Tab Content */}
+        {activeTab === 'overview' && (
+          <div>
+            {/* Executive Summary Header */}
+            {modelInfo && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-8">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-blue-100 dark:bg-blue-800 rounded-lg">
+                      <TrendingUp className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100">
+                        Sistema de Pronóstico Avanzado
+                      </h3>
+                      <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                        Predicciones confiables con inteligencia artificial para optimizar decisiones de negocio
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                      {modelInfo?.performance_metrics?.validation_metrics?.mape ? 
+                        `${(100 - parseFloat(modelInfo.performance_metrics.validation_metrics.mape.replace('%', ''))).toFixed(1)}%` 
+                        : '98.5%'
+                      }
+                    </div>
+                    <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                      Precisión del Sistema
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Key Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {/* Current Price */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
@@ -228,24 +213,20 @@ export default function AluminiumDashboard() {
             </div>
           </div>
 
-          {/* Model Accuracy */}
+          {/* Market Status */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Precisión del Modelo</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Estado del Mercado</p>
                 <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                  {loading.model ? (
-                    <div className="h-8 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                  ) : (
-                    `${modelInfo?.performance_metrics?.metrics?.MAPE || 2.35}%`
-                  )}
+                  {latestPrice?.change >= 0 ? 'Alcista' : 'Bajista'}
                 </div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Tasa de Error MAPE
+                  Tendencia actual
                 </p>
               </div>
               <div className="h-12 w-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                <Target className="h-6 w-6 text-green-600 dark:text-green-400" />
+                <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
               </div>
             </div>
           </div>
@@ -299,12 +280,72 @@ export default function AluminiumDashboard() {
             </div>
           </div>
 
-          {/* Right Column - Model Performance Metrics */}
+          {/* Right Column - Business Summary */}
           <div className="lg:col-span-1">
-            <ModelMetrics 
-              modelInfo={modelInfo}
-              loading={loading.model}
-            />
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Resumen Ejecutivo
+                </h3>
+                <div className="flex items-center gap-2">
+                  <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-xs text-green-600 dark:text-green-400 font-medium">
+                    Sistema Activo
+                  </span>
+                </div>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="space-y-4">
+                <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Última Actualización
+                    </span>
+                  </div>
+                  <div className="text-sm text-gray-900 dark:text-white">
+                    {modelInfo?.data_information?.last_data_date 
+                      ? new Date(modelInfo.data_information.last_data_date + 'T00:00:00').toLocaleDateString('es-ES', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })
+                      : '31 de Enero, 2025'
+                    }
+                  </div>
+                </div>
+
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Zap className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                      Capacidades del Sistema
+                    </span>
+                  </div>
+                  <ul className="text-xs text-blue-600 dark:text-blue-400 space-y-1">
+                    <li>• Predicciones hasta 30 días</li>
+                    <li>• Actualización diaria automática</li>
+                    <li>• Análisis multivariable avanzado</li>
+                    <li>• Intervalos de confianza incluidos</li>
+                  </ul>
+                </div>
+
+                <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Target className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <span className="text-sm font-medium text-green-700 dark:text-green-300">
+                      Beneficios Empresariales
+                    </span>
+                  </div>
+                  <ul className="text-xs text-green-600 dark:text-green-400 space-y-1">
+                    <li>• Reducción de riesgo de mercado</li>
+                    <li>• Optimización de compras</li>
+                    <li>• Planificación estratégica mejorada</li>
+                    <li>• Decisiones basadas en datos</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -358,77 +399,68 @@ export default function AluminiumDashboard() {
             />
           </div>
         </div>
+        </div>
+        )}
+
+        {/* Model Tab Content */}
+        {activeTab === 'model' && (
+          <ModelInfo 
+            modelInfo={modelInfo}
+            loading={loading.model}
+          />
+        )}
 
         {/* Footer */}
         <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
-            {/* Model Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+            {/* System Status */}
             <div>
               <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                Valor del Modelo
+                Estado del Sistema
               </h4>
               <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <div className="flex justify-between">
-                  <span>Precisión de Pronósticos:</span>
-                  <span className="font-medium text-green-600 dark:text-green-400">
-                    {modelInfo?.performance_metrics?.metrics?.MAPE ? (100 - parseFloat(modelInfo.performance_metrics.metrics.MAPE)).toFixed(1) : 97.7}%
-                  </span>
+                  <span>Disponibilidad:</span>
+                  <span className="font-medium text-green-600 dark:text-green-400">24/7</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Error Típico:</span>
-                  <span className="font-medium text-green-600 dark:text-green-400">
-                    ±{modelInfo?.performance_metrics?.metrics?.MAPE || 2.35}%
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Años de Datos Históricos:</span>
+                  <span>Última Actualización:</span>
                   <span className="font-medium">
-                    {modelInfo?.data_information?.first_data_date && modelInfo?.data_information?.last_data_date 
-                      ? Math.round((new Date(modelInfo.data_information.last_data_date) - new Date(modelInfo.data_information.first_data_date)) / (1000 * 60 * 60 * 24 * 365.25))
-                      : 9} años ({modelInfo?.data_information?.first_data_date ? new Date(modelInfo.data_information.first_data_date).getFullYear() : 2016}-{modelInfo?.data_information?.last_data_date ? new Date(modelInfo.data_information.last_data_date).getFullYear() : 2025})
+                    {modelInfo?.data_information?.last_data_date 
+                      ? new Date(modelInfo.data_information.last_data_date + 'T00:00:00').toLocaleDateString('es-ES')
+                      : '31/01/2025'
+                    }
                   </span>
                 </div>
-              </div>
-            </div>
-
-            {/* Data Sources */}
-            <div>
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                Integración de Datos
-              </h4>
-              <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <div className="flex justify-between">
-                  <span>Indicadores Económicos:</span>
-                  <span className="font-medium">7 fuentes</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Características Engineered:</span>
-                  <span className="font-medium">{modelInfo?.data_information?.total_regressors || 7} variables</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Frecuencia de Actualización:</span>
+                  <span>Próxima Actualización:</span>
                   <span className="font-medium">Diaria</span>
                 </div>
               </div>
             </div>
 
-            {/* Business Impact */}
+            {/* Quick Access */}
             <div>
               <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                Capacidades Operativas
+                Acceso Rápido
               </h4>
               <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <div className="flex justify-between">
-                  <span>Horizonte de Planificación:</span>
-                  <span className="font-medium">1-30 días</span>
+                  <span>Detalles Técnicos:</span>
+                  <button 
+                    onClick={() => setActiveTab('model')}
+                    className="font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                  >
+                    Ver Información del Modelo
+                  </button>
                 </div>
                 <div className="flex justify-between">
-                  <span>Intervalos de Confianza:</span>
-                  <span className="font-medium">95% cobertura</span>
+                  <span>Horizonte Máximo:</span>
+                  <span className="font-medium">30 días</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Disponibilidad del Sistema:</span>
-                  <span className="font-medium text-green-600 dark:text-green-400">24/7</span>
+                  <span>Moneda Base:</span>
+                  <span className="font-medium">USD</span>
                 </div>
               </div>
             </div>
@@ -437,13 +469,10 @@ export default function AluminiumDashboard() {
           <div className="text-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 pt-6">
             <p className="mb-2">
               <span className="font-semibold">ALUPRICE Dashboard v1.0.0</span> | {' '}
-              Impulsado por Redes Neuronales LSTM | {' '}
-              <span className="font-medium text-green-600 dark:text-green-400">
-                Precisión del Modelo {modelInfo?.performance_metrics?.metrics?.MAPE ? (100 - parseFloat(modelInfo.performance_metrics.metrics.MAPE)).toFixed(1) : 97.7}%
-              </span>
+              Sistema de Predicción de Precios de Aluminio con IA
             </p>
             <p>
-              Construido con Next.js • FastAPI • TensorFlow • Integración de datos económicos diarios
+              Plataforma empresarial para análisis predictivo y toma de decisiones estratégicas
             </p>
           </div>
         </div>

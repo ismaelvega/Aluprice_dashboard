@@ -51,8 +51,8 @@ export default function ExecutiveSummary({ latestPrice, forecastData, modelInfo,
     },
     {
       title: 'Confianza del Modelo',
-      value: modelInfo?.performance_metrics?.metrics?.MAPE ? `${(100 - parseFloat(modelInfo.performance_metrics.metrics.MAPE)).toFixed(1)}%` : '97.7%',
-      description: `Basado en precisión MAPE de ${modelInfo?.performance_metrics?.metrics?.MAPE || 2.35}%`,
+      value: modelInfo?.performance_metrics?.validation_metrics?.mape ? `${(100 - parseFloat(modelInfo.performance_metrics?.validation_metrics?.mape)).toFixed(1)}%` : '97.7%',
+      description: `Basado en precisión MAPE de ${modelInfo?.performance_metrics?.validation_metrics?.mape || 2.35}%`,
       type: 'positive'
     }
   ];
@@ -124,7 +124,7 @@ export default function ExecutiveSummary({ latestPrice, forecastData, modelInfo,
           )}
           <div className="flex items-start gap-2">
             <Info className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <span>La precisión del modelo del {modelInfo?.performance_metrics?.metrics?.MAPE ? (100 - parseFloat(modelInfo.performance_metrics.metrics.MAPE)).toFixed(1) : 97.7}% proporciona alta confianza en los pronósticos</span>
+            <span>La precisión del modelo del {modelInfo?.performance_metrics?.validation_metrics?.mape ? (100 - parseFloat(modelInfo.performance_metrics?.validation_metrics?.mape)).toFixed(1) : 97.7}% proporciona alta confianza en los pronósticos</span>
           </div>
           {volatility > 5 && (
             <div className="flex items-start gap-2">

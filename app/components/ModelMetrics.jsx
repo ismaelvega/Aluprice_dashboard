@@ -21,7 +21,7 @@ export default function ModelMetrics({ modelInfo, loading }) {
   const metrics = [
     {
       label: 'Precisión del Modelo',
-      value: `${modelInfo?.performance_metrics?.metrics?.MAPE ? (100 - parseFloat(modelInfo.performance_metrics.metrics.MAPE)).toFixed(1) : 97.7}%`,
+      value: `${modelInfo?.performance_metrics?.validation_metrics?.mape ? (100 - parseFloat(modelInfo.performance_metrics?.validation_metrics?.mape)).toFixed(1) : 97.7}%`,
       description: 'Exactitud en predicciones históricas',
       icon: CheckCircle,
       color: 'text-green-600 dark:text-green-400',
@@ -29,7 +29,7 @@ export default function ModelMetrics({ modelInfo, loading }) {
     },
     {
       label: 'Error Promedio',
-      value: `${modelInfo?.performance_metrics?.metrics?.MAPE || 2.35}%`,
+      value: `${modelInfo?.performance_metrics?.validation_metrics?.mape || 2.35}%`,
       description: 'Desviación típica vs precio real',
       icon: Shield,
       color: 'text-blue-600 dark:text-blue-400',
@@ -161,7 +161,7 @@ export default function ModelMetrics({ modelInfo, loading }) {
           </span>
         </div>
         <p className="text-xs text-green-600 dark:text-green-400">
-          Una tasa de error MAPE de {modelInfo?.performance_metrics?.metrics?.MAPE || 2.35}% indica excelente precisión de predicción para pronósticos de precios de commodities.
+          Una tasa de error MAPE de {modelInfo?.performance_metrics?.validation_metrics?.mape || 2.35}% indica excelente precisión de predicción para pronósticos de precios de commodities.
         </p>
       </div>
     </div>

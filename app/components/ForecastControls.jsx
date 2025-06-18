@@ -118,7 +118,7 @@ export default function ForecastControls({ selectedHorizon, onHorizonChange, loa
           </span>
         </div>
         <p className="text-xs text-blue-600 dark:text-blue-400">
-          Pronóstico avanzado de series temporales con 7 indicadores económicos y 13 características engineered.
+          Pronóstico avanzado de series temporales con 7 indicadores económicos.
         </p>
       </div>
     </div>
