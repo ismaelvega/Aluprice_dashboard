@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { TrendingUp, Activity, DollarSign, Target, Calendar, Zap, AlertCircle, Brain, BarChart3 } from 'lucide-react';
+import { TrendingUp, TrendingDown, Activity, DollarSign, Target, Calendar, Zap, AlertCircle, Brain, BarChart3 } from 'lucide-react';
 import PriceChart from './PriceChart';
 import ForecastChart from './ForecastChart';
 import ModelMetrics from './ModelMetrics';
@@ -218,15 +218,27 @@ export default function AluminiumDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Estado del Mercado</p>
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                <div className={`text-2xl font-bold ${
+                  latestPrice?.change >= 0 
+                    ? 'text-green-600 dark:text-green-400' 
+                    : 'text-red-600 dark:text-red-400'
+                }`}>
                   {latestPrice?.change >= 0 ? 'Alcista' : 'Bajista'}
                 </div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Tendencia actual
                 </p>
               </div>
-              <div className="h-12 w-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
+              <div className={`h-12 w-12 rounded-lg flex items-center justify-center ${
+                latestPrice?.change >= 0 
+                  ? 'bg-green-100 dark:bg-green-900' 
+                  : 'bg-red-100 dark:bg-red-900'
+              }`}>
+                {latestPrice?.change >= 0 ? (
+                  <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
+                ) : (
+                  <TrendingDown className="h-6 w-6 text-red-600 dark:text-red-400" />
+                )}
               </div>
             </div>
           </div>
