@@ -2,30 +2,37 @@
 
 import { useState, useEffect } from 'react';
 import { DollarSign, TrendingUp, Zap, BarChart3, Globe, Factory, TrendingDown } from 'lucide-react';
-import { fetchHistoricalData } from '../utils/api';
+import { fetchHistoricalData, fetchModelInfo } from '../utils/api';
 
 export default function MarketIndicators({ loading: externalLoading }) {
   const [historicalData, setHistoricalData] = useState(null);
+  const [modelInfo, setModelInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const loadHistoricalData = async () => {
+    const loadData = async () => {
       try {
         setLoading(true);
         setError(null);
-        // Fetch recent historical data (last 7 days to calculate changes)
-        const data = await fetchHistoricalData(7);
-        setHistoricalData(data);
+        
+        // Fetch both historical data and model info in parallel
+        const [historicalData, modelInfo] = await Promise.all([
+          fetchHistoricalData(7),
+          fetchModelInfo()
+        ]);
+        
+        setHistoricalData(historicalData);
+        setModelInfo(modelInfo);
       } catch (err) {
-        console.error('Error fetching historical data:', err);
+        console.error('Error fetching data:', err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    loadHistoricalData();
+    loadData();
   }, []);
 
   // Function to calculate percentage change between latest and previous values
@@ -59,6 +66,8 @@ export default function MarketIndicators({ loading: externalLoading }) {
       case 'inflation_rate':
         return `${value.toFixed(2)}%`;
       case 'global_price':
+      case 'copper_price':
+      case 'lead_price':
         return `$${value.toFixed(0)}`;
       default:
         return value.toFixed(2);
@@ -67,6 +76,7 @@ export default function MarketIndicators({ loading: externalLoading }) {
 
   // Dynamic indicators based on API data
   const getIndicators = () => {
+    console.log(historicalData?.data_information)
     if (!historicalData?.historical_data || historicalData.historical_data.length === 0) {
       // Fallback to empty array while loading
       return [];
@@ -180,6 +190,36 @@ export default function MarketIndicators({ loading: externalLoading }) {
         icon: BarChart3,
         color: 'indigo',
         description: 'Precio global del aluminio LME'
+      });
+    }
+
+    // Copper Price
+    if (latestData.copper_price !== undefined) {
+      const changeData = calculateChange(latestData.copper_price, previousData.copper_price);
+      
+      indicators.push({
+        name: 'Precio Cobre',
+        value: formatValue('copper_price', latestData.copper_price),
+        change: changeData.change,
+        trend: changeData.trend,
+        icon: DollarSign,
+        color: 'orange',
+        description: 'Precio del cobre LME (USD/ton)'
+      });
+    }
+
+    // Lead Price
+    if (latestData.lead_price !== undefined) {
+      const changeData = calculateChange(latestData.lead_price, previousData.lead_price);
+      
+      indicators.push({
+        name: 'Precio Plomo',
+        value: formatValue('lead_price', latestData.lead_price),
+        change: changeData.change,
+        trend: changeData.trend,
+        icon: DollarSign,
+        color: 'gray',
+        description: 'Precio del plomo LME (USD/ton)'
       });
     }
 
@@ -312,7 +352,7 @@ export default function MarketIndicators({ loading: externalLoading }) {
           </span>
         </div>
         <p className="text-xs text-blue-600 dark:text-blue-400">
-          Los {indicators.length} indicadores económicos se integran automáticamente en el modelo de pronóstico LSTM 
+          Los {modelInfo?.regressor_descriptions ? Object.keys(modelInfo.regressor_descriptions).length : 0} indicadores económicos se integran automáticamente en el modelo de pronóstico {modelInfo?.model_type || 'LSTM'}
           para proporcionar predicciones de precios completas basadas en las últimas condiciones del mercado.
         </p>
       </div>
