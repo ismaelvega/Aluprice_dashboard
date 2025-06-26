@@ -179,19 +179,20 @@ export default function MarketIndicators({ loading: externalLoading }) {
     }
 
     // Global Aluminum Price
-    if (latestData.global_price !== undefined) {
-      const changeData = calculateChange(latestData.global_price, previousData.global_price);
+    // console.log('global_price', latestData.global_price)
+    // if (latestData.global_price !== undefined || latestData.global_price !== null) {
+    //   const changeData = calculateChange(latestData.global_price, previousData.global_price);
       
-      indicators.push({
-        name: 'Precio Aluminio Global',
-        value: formatValue('global_price', latestData.global_price),
-        change: changeData.change,
-        trend: changeData.trend,
-        icon: BarChart3,
-        color: 'indigo',
-        description: 'Precio global del aluminio LME'
-      });
-    }
+    //   indicators.push({
+    //     name: 'Precio Aluminio Global',
+    //     value: formatValue('global_price', latestData.global_price),
+    //     change: changeData.change,
+    //     trend: changeData.trend,
+    //     icon: BarChart3,
+    //     color: 'indigo',
+    //     description: 'Precio global del aluminio LME'
+    //   });
+    // }
 
     // Copper Price
     if (latestData.copper_price !== undefined) {
@@ -352,7 +353,7 @@ export default function MarketIndicators({ loading: externalLoading }) {
           </span>
         </div>
         <p className="text-xs text-blue-600 dark:text-blue-400">
-          Los {modelInfo?.regressor_descriptions ? Object.keys(modelInfo.regressor_descriptions).length : 0} indicadores económicos se integran automáticamente en el modelo de pronóstico {modelInfo?.model_type || 'LSTM'}
+          Los {modelInfo?.regressor_descriptions ? Object.keys(modelInfo.regressor_descriptions).filter(key => key !== 'global_price').length : 0} indicadores económicos se integran automáticamente en el modelo de pronóstico {modelInfo?.model_type || 'LSTM'}
           para proporcionar predicciones de precios completas basadas en las últimas condiciones del mercado.
         </p>
       </div>

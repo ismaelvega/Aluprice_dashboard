@@ -222,13 +222,13 @@ export default function ModelInfo({ modelInfo, loading }) {
                     </div>
                     <div className="text-xs text-gray-500">Peor caso observado</div>
                   </div>
-                  <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                  {/* <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
                     <div className="text-sm text-gray-600 dark:text-gray-400">Sesgo del Precio</div>
                     <div className="text-lg font-bold text-gray-900 dark:text-white">
                       ${modelInfo.performance_metrics?.price_statistics?.price_bias?.toFixed(2) || 73.3864908854166.toFixed(2)}
                     </div>
                     <div className="text-xs text-gray-500">Sesgo promedio de predicción</div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             )}
@@ -437,8 +437,8 @@ export default function ModelInfo({ modelInfo, loading }) {
               </h4>
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                 Este modelo de IA avanzado utiliza redes neuronales LSTM para proporcionar predicciones precisas de precios del aluminio 
-                hasta 30 días en el futuro, con una precisión del {accuracy}% y un error promedio de solo ${avgError} por tonelada. 
-                Entrenado con {dataYears} años de datos históricos y 7 indicadores económicos clave, permite tomar decisiones 
+                hasta {modelInfo?.prediction_horizon || 30} días en el futuro, con una precisión del {accuracy}% y un error promedio de solo ${avgError} por tonelada. 
+                Entrenado con {dataYears} años de datos históricos y {modelInfo?.regressor_descriptions ? Object.keys(modelInfo.regressor_descriptions).filter(key => key !== 'global_price').length : 0} indicadores económicos clave, permite tomar decisiones 
                 estratégicas informadas y optimizar la gestión de riesgos en el mercado de materias primas.
               </p>
             </div>
