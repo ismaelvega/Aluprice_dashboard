@@ -1,4 +1,4 @@
-# ALUPRICE - Professional Aluminium Price Forecasting Dashboard
+# ALUPRICE - Aluminium Price Forecasting Dashboard
 
 <div align="center">
 
@@ -6,8 +6,6 @@
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.3.3-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.0-61dafb?style=flat-square&logo=react)](https://react.dev/)
-[![Model Accuracy](https://img.shields.io/badge/LSTM%20Model-97.7%25%20Accuracy-green?style=flat-square&logo=brain)](https://github.com)
-[![TypeScript](https://img.shields.io/badge/JavaScript-ES2024-f7df1e?style=flat-square&logo=javascript)](https://javascript.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
 
 **Executive-grade dashboard for aluminium price forecasting with LSTM neural networks**  
@@ -31,7 +29,7 @@ npm install && npm run dev
 ```
 
 ### **💼 Key Value Propositions**
-- **97.7% Forecast Accuracy** - LSTM model with 2.35% MAPE error rate
+- **97.7% Forecast Accuracy** - LSTM model with 3.50% MAPE error rate
 - **Real-time Market Intelligence** - Live price tracking and economic indicators
 - **Executive-Ready Presentations** - UI optimized for stakeholder meetings
 - **Strategic Decision Support** - Data-driven recommendations and market sentiment analysis
@@ -52,20 +50,20 @@ npm install && npm run dev
 ### 🧠 **Advanced Machine Learning**
 - **LSTM Neural Network** - Bidirectional LSTM + LSTM architecture
 - **Multi-Source Data Integration** - 8 economic indicators and data sources
-- **High Accuracy Model** - 97.7% accuracy (2.35% MAPE)
+- **High Accuracy Model** - 96.5% accuracy (3.5% MAPE)
 - **Confidence Intervals** - Upper and lower bounds for all predictions
 - **Model Performance Metrics** - Real-time accuracy and error tracking
-- **🆕 Economic Drivers Carousel** - Interactive explainer for AI transparency showing 7 economic factors driving predictions
+- **🆕 Economic Drivers Carousel** - Interactive explainer for AI transparency showing 8 economic factors driving predictions
 
 ### 🎯 **Explainable AI Features**
-- **Economic Drivers Visualization** - Interactive carousel showcasing 7 key economic indicators
+- **Economic Drivers Visualization** - Interactive carousel showcasing 8 key economic indicators
 - **Strategic Business Insights** - Executive-level analysis of each economic factor's impact
 - **Risk Assessment & Recommendations** - Strategic implications and market intelligence
 - **Historical vs. Predicted Trends** - Combined visualization with Recharts integration
 - **AI Transparency** - Transform "black box" predictions into actionable business intelligence
 
 ### 📈 **Interactive Forecasting Tools**
-- **Quick Forecast Buttons** - 1, 3, 7, 15-day predictions
+- **Quick Forecast Buttons** - 1, 3, 7, 15, 30-day predictions
 - **Custom Horizon Selection** - Any timeframe from 1-30 days
 - **Historical Context** - Combined historical and forecast visualization
 - **Price Range Analysis** - Min/max/average predicted prices
@@ -119,8 +117,6 @@ aluminium-forecasting-dashboard/
 │   │   └── api.js               # API integration with mock fallback
 │   ├── layout.js                # Root layout and metadata
 │   └── page.js                  # Main entry point
-├── docs/                        # Comprehensive documentation
-│   └── API_REFERENCE.md         # API documentation
 └── public/                      # Static assets
 ```
 
@@ -285,14 +281,6 @@ vercel
 # Set environment variables in Vercel dashboard
 NEXT_PUBLIC_API_URL=https://your-api.com
 ```
-
----
-
-## 📚 **Documentation**
-
-Comprehensive documentation is available in the `/docs` folder:
-
-- **[API_REFERENCE.md](docs/API_REFERENCE.md)** - Complete API documentation
 
 ---
 
